@@ -1,0 +1,155 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// =======================
+// ENUMS
+// =======================
+enum UserRole {
+  ADMIN
+  OPERADOR
+  VENDEDOR
+}
+
+enum ProductionStatus {
+  PLANNED
+  IN_PROGRESS
+  FINISHED
+  CANCELLED
+}
+
+enum SalePaymentMethod {
+  CASH
+  CARD
+  TRANSFER
+}
+
+// =======================
+// USERS & AUTH
+// =======================
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(OPERADOR)
+  isActive  Boolean  @default(true)
+
+  sales     Sale[]
+  expenses  Expense[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// =======================
+// ANIMALS
+// =======================
+model Animal {
+  id          Int          @id @default(autoincrement())
+  code        String       @unique
+  name        String
+  species     String
+  breed       String?
+  age         Int?
+  weight      Float?
+  status      String       @default("ACTIVE")
+
+  productions Production[]
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+// =======================
+// PRODUCTION
+// =======================
+model Production {
+  id          Int              @id @default(autoincrement())
+  animalId    Int
+  startDate   DateTime
+  endDate     DateTime?
+  status      ProductionStatus @default(PLANNED)
+  notes       String?
+
+  animal      Animal           @relation(fields: [animalId], references: [id])
+  expenses    Expense[]
+
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+// =======================
+// INVENTORY
+// =======================
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String
+  stock       Int
+  unit        String
+  unitPrice   Float
+
+  saleItems   SaleItem[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// =======================
+// SALES
+// =======================
+model Sale {
+  id            Int                 @id @default(autoincrement())
+  userId        Int
+  total         Float
+  paymentMethod SalePaymentMethod
+  saleDate      DateTime            @default(now())
+
+  user          User                @relation(fields: [userId], references: [id])
+  items         SaleItem[]
+
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+}
+
+model SaleItem {
+  id        Int     @id @default(autoincrement())
+  saleId   Int
+  productId Int
+  quantity Int
+  price    Float
+
+  sale     Sale    @relation(fields: [saleId], references: [id])
+  product  Product @relation(fields: [productId], references: [id])
+}
+
+// =======================
+// EXPENSES
+// =======================
+model Expense {
+  id            Int       @id @default(autoincrement())
+  userId        Int
+  productionId  Int?
+  description   String
+  amount        Float
+  expenseDate   DateTime  @default(now())
+  category      String
+
+  user          User       @relation(fields: [userId], references: [id])
+  production    Production? @relation(fields: [productionId], references: [id])
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
