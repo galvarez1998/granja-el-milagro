@@ -109,55 +109,94 @@ Arquitectura **en capas (Clean Architecture / Modular)**:
 
 ## 📁 Estructura del Repositorio
 	backend/
-	├── src/
-	│   ├── api/
-	│   │   ├── v1/
-	│   │   │   ├── controllers/
-	│   │   │   │   ├── animal.controller.js
-	│   │   │   │   ├── production.controller.js
-	│   │   │   │   ├── sales.controller.js
-	│   │   │   │   ├── expenses.controller.js
-	│   │   │   ├── routes/
-	│   │   │   │   ├── animal.routes.js
-	│   │   │   │   ├── production.routes.js
-	│   │   │   │   ├── sales.routes.js
-	│   │   │   │   ├── expenses.routes.js
-	│   │   │   ├── validators/
-	│   │   │   │   ├── animal.validator.js
-	│   │   │   │   ├── production.validator.js
-	│   │   │   │   ├── sales.validator.js
-	│   │   │   │   ├── expenses.validator.js
-	│   ├── config/
-	│   │   ├── db.js
-	│   │   ├── env.js
-	│   ├── domain/
-	│   │   ├── models/
-	│   │   │   ├── Animal.js
-	│   │   │   ├── Production.js
-	│   │   │   ├── Sale.js
-	│   │   │   ├── Expense.js
-	│   │   ├── entities/
-	│   │   │   ├── animal.entity.js
-	│   │   │   ├── production.entity.js
-	│   │   │   ├── sale.entity.js
-	│   │   │   ├── expense.entity.js
-	│   ├── services/
-	│   │   ├── animal.service.js
-	│   │   ├── production.service.js
-	│   │   ├── sales.service.js
-	│   │   ├── expenses.service.js
-	│   ├── repositories/
-	│   │   ├── animal.repository.js
-	│   │   ├── production.repository.js
-	│   │   ├── sales.repository.js
-	│   │   ├── expenses.repository.js
-	│   ├── utils/
-	│   │   ├── errorHandler.js
-	│   │   ├── response.js
-	│   ├── app.js
-	│   ├── server.js
-	├── package.json
-	├── .env
+├── src/
+│   ├── modules/
+│   │   ├── animal/
+│   │   │   ├── animal.controller.ts
+│   │   │   ├── animal.service.ts
+│   │   │   ├── animal.module.ts
+│   │   │   ├── dto/
+│   │   │   │   ├── create-animal.dto.ts
+│   │   │   │   └── update-animal.dto.ts
+│   │   │   └── repository/
+│   │   │       └── animal.repository.ts
+│   │   │
+│   │   ├── production/
+│   │   │   ├── production.controller.ts
+│   │   │   ├── production.service.ts
+│   │   │   ├── production.module.ts
+│   │   │   ├── dto/
+│   │   │   │   ├── create-production.dto.ts
+│   │   │   │   └── update-production.dto.ts
+│   │   │   └── repository/
+│   │   │       └── production.repository.ts
+│   │   │
+│   │   ├── sales/
+│   │   │   ├── sales.controller.ts
+│   │   │   ├── sales.service.ts
+│   │   │   ├── sales.module.ts
+│   │   │   ├── dto/
+│   │   │   │   ├── create-sale.dto.ts
+│   │   │   │   └── update-sale.dto.ts
+│   │   │   └── repository/
+│   │   │       └── sales.repository.ts
+│   │   │
+│   │   ├── expenses/
+│   │   │   ├── expenses.controller.ts
+│   │   │   ├── expenses.service.ts
+│   │   │   ├── expenses.module.ts
+│   │   │   ├── dto/
+│   │   │   │   ├── create-expense.dto.ts
+│   │   │   │   └── update-expense.dto.ts
+│   │   │   └── repository/
+│   │   │       └── expenses.repository.ts
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.service.ts
+│   │   │   ├── auth.module.ts
+│   │   │   ├── strategies/
+│   │   │   │   └── jwt.strategy.ts
+│   │   │   └── guards/
+│   │   │       └── jwt-auth.guard.ts
+│   │   │
+│   │   ├── users/
+│   │   │   ├── users.controller.ts
+│   │   │   ├── users.service.ts
+│   │   │   ├── users.module.ts
+│   │   │   ├── dto/
+│   │   │   │   ├── create-user.dto.ts
+│   │   │   │   └── update-user.dto.ts
+│   │   │   └── repository/
+│   │   │       └── users.repository.ts
+│   │
+│   ├── prisma/
+│   │   ├── prisma.service.ts
+│   │   └── schema.prisma
+│   │
+│   ├── common/
+│   │   ├── filters/
+│   │   │   └── http-exception.filter.ts
+│   │   ├── interceptors/
+│   │   │   └── response.interceptor.ts
+│   │   ├── decorators/
+│   │   │   └── roles.decorator.ts
+│   │   ├── guards/
+│   │   │   └── roles.guard.ts
+│   │   └── constants/
+│   │       └── roles.enum.ts
+│   │
+│   ├── config/
+│   │   └── configuration.ts
+│   │
+│   ├── app.module.ts
+│   └── main.ts
+│
+├── package.json
+├── tsconfig.json
+├── .env
+└── README.md
+
 
 ---
 
